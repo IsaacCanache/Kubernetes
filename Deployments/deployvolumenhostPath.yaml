@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: mi-aplicacion
+spec:
+ replicas: 3
+ selector:
+   matchLabels:
+     app: mi-aplicacion
+ template:
+   metadata:
+     labels:
+       app: mi-aplicacion
+   spec:
+     containers:
+     - name: mi-contenedor
+       image: nginx
+       ports:
+       - containerPort: 80
+       volumeMounts:
+       - mountPath: /usr/share/nginx/html
+         name: mi-volumen
+     volumes:
+     - name: mi-volumen
+       hostPath:
+         path: /data/mi-volumen
+
+
+#kubectl apply -f deploymentvolumenhostPath.yaml
+

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: myapp-deployment
+spec:
+ replicas: 3
+ selector:
+   matchLabels:
+     app: myapp
+ template:
+   metadata:
+     labels:
+       app: myapp
+   spec:
+     containers:
+       - name: myapp-container
+         image: myapp
+         env:
+           - name: PLAYER_INITIAL_LIVES
+             valueFrom:
+               configMapKeyRef:
+                name: game-demo
+                key: player_initial_lives
+         volumeMounts:
+           - name: secret-volume
+             mountPath: /etc/secret
+     volumes:
+       - name: secret-volume
+         secret:
+           secretName: db-credentials
