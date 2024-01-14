@@ -1,0 +1,8 @@
+Instalar KS3 Fast
+
+curl -sfL https://get.k3s.io | sh -
+
+//verificar
+sudo systemctl status k3s
+k3s --version
+kubectl get nodes
