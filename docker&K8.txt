@@ -1,0 +1,85 @@
+Docker Commands
+
+1.- Manejo de imagenes
+
+//crear imagenes desde el directorio actual a partir der un DOKERFILE
+docker build -t my-image .
+
+//Etiquetar una imagen
+docker tag my-image my-new-image
+
+//sube la imagen a un repositorio remoto
+docker push my-image
+
+//Imagen con version
+docker build -t my-app:v1 .
+
+//ver imagenes
+docker images
+
+
+//DOKERFILE EXAMPLE
+
+# Comienza con una imagen base
+FROM ubuntu:18.04
+
+# Copia el directorio "app" en tu directorio de trabajo al contenedor
+COPY app /app
+
+# Ejecuta un comando en el contenedor
+RUN make -C /app
+
+# Define el comando predeterminado para ejecutar cuando se inicia el contenedor
+CMD ["python", "/app/app.py"]
+
+..........................
+
+# Dockerfile
+FROM node:18.16.0-alpine3.17
+RUN mkdir -p /opt/app
+WORKDIR /opt/app
+COPY src/package.json src/package-lock.json .
+RUN npm install
+COPY src/ .
+EXPOSE 3000
+CMD [ "npm", "start"]
+
+
+
+2.- Manejo de Contenedores:
+
+//ejucutar un contenedor 
+docker run -d -p 8080:80 my-image
+
+3.- Kubernetes Commands:
+
+//crear configmap
+kubectl create configmap game-config-2 --from-file=configure-pod-container/configmap/game.properties
+
+PROCEDIMIENTO PARA UN AUTOSCALER (HPA)
+
+//crear autoscale (hpa-HorizontalPodAutoscaler) 
+kubectl autoscale deployment <nombre_del_despliegue> --cpu-percent=50 --min=1 --max=10
+
+
+//consultar hpa
+kubectl get hpa
+
+
+
+
+PROCEDIMIENTO PARA HACER RollingUpdate:
+
+//cambiar imagen automaticamente con un RollingUpdate
+kubectl set image deployment/myapp myapp=myrepo/myapp:1.0.1
+
+//verifia el estatus de la actualizacion
+kubectl rollout status deployment/myapp
+
+//rebierte con la actualizacion
+kubectl rollout undo deployment/myapp
+
+
+
+
+
